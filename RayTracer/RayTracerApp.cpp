@@ -21,7 +21,7 @@ RayTracerApp::RayTracerApp()
 	m_pObjectManager->AddObject(std::make_shared<Sphere>(Vector3f(0.f, 1000.f, 0.f), 200.f));
 	m_pObjectManager->AddObject(std::make_shared<Sphere>(Vector3f(-1000.f, 20000.f, -5000.f), 5000.f));
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		float x = (float)((rand() % 10000) / 2) - 2000.f;
 		float y = (float)((rand() % 20000)) + 500.f;

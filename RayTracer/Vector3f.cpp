@@ -109,3 +109,8 @@ void Vector3f::Print()
 	std::cout << x << "," << y << "," << z << "\n";
 	//std::cout << "FVector(" << x << "," << y << "," << z << ")\n";
 }
+
+Vector3f Vector3f::Zero()
+{
+	return Vector3f(0.f, 0.f, 0.f);
+}

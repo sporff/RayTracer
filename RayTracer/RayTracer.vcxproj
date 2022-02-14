@@ -146,9 +146,12 @@
   <ItemGroup>
     <ClCompile Include="BasicCamera.cpp" />
     <ClCompile Include="BasicObjectManager.cpp" />
+    <ClCompile Include="EulerRotator.cpp" />
     <ClCompile Include="GraphicsWrapper.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IObjectManager.cpp" />
+    <ClCompile Include="IRotator.cpp" />
+    <ClCompile Include="QuatRotator.cpp" />
     <ClCompile Include="RayTracer.cpp" />
     <ClCompile Include="RayTracerApp.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -160,9 +163,12 @@
   <ItemGroup>
     <ClInclude Include="BasicCamera.h" />
     <ClInclude Include="BasicObjectManager.h" />
+    <ClInclude Include="EulerRotator.h" />
     <ClInclude Include="GraphicsWrapper.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IObjectManager.h" />
+    <ClInclude Include="IRotator.h" />
+    <ClInclude Include="QuatRotator.h" />
     <ClInclude Include="RayTracerApp.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="IWorldObject.h" />

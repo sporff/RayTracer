@@ -12,6 +12,8 @@ public:
 	Vector3f(const Vector3f& copyFrom);
 	~Vector3f();
 
+	static Vector3f Zero();
+
 	float Length() const;
 	float LengthSquared() const;
 	float FastInverseLength() const;
