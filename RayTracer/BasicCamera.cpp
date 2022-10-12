@@ -64,7 +64,8 @@ bool BasicCamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, Ta
 	//std::fill(m_pixelBuffer.begin(), m_pixelBuffer.end(), 0);
 	std::fill(m_backBuffer.begin(), m_backBuffer.end(), PixelType());
 
-	for (int y = 0; y < m_bufferHeight; y++)
+	int rowCountPerThread = 20;
+	for (int y = 0; y < m_bufferHeight; y+=rowCountPerThread)
 	//for (int y = 0; y < bufferHeight; y++)
 	{
 		Vector3f curRowPos = curLeftSide;
@@ -75,44 +76,50 @@ bool BasicCamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, Ta
 		//std::cout << "Task-- : " << taskRefCount << "\n";
 
 		pTaskExec->AddTask(
-			[&taskRefCount, y, cameraOrigin, curRowPos, rowColOffset, texelRightVec, &objs, this]()
+			[&taskRefCount, y, rowCountPerThread, cameraOrigin, curRowPos, rowColOffset, texelRightVec, texelDownVec, &objs, this]()
 			{
 				//auto taskStartTime = std::chrono::high_resolution_clock::now();
 				Ray rayToCast(cameraOrigin, cameraOrigin);
 				Vector3f curRowP = curRowPos;
 				int64_t rowColO = rowColOffset;
 
-				for (int x = 0; x < this->GetBufferWidth(); x++)
+				for (int rowCount = 0; rowCount < rowCountPerThread; rowCount++)
 				{
-					rayToCast.SetDirection(curRowP);
-
-					float closestHit = -1.f;
-					for (auto& curObj : objs)
+					for (int x = 0; x < this->GetBufferWidth(); x++)
 					{
-						Vector3f intersectPt;
-						float t = 0.f;
-						if (curObj->GetRayIntersection(rayToCast, &t, &intersectPt))
+						rayToCast.SetDirection(curRowP);
+
+						float closestHit = -1.f;
+						for (auto& curObj : objs)
 						{
-							float dis = (intersectPt - cameraOrigin).Length();
-							if (closestHit < 0.f || dis < closestHit)
+							Vector3f intersectPt;
+							float t = 0.f;
+							if (curObj->GetRayIntersection(rayToCast, &t, &intersectPt))
 							{
-								closestHit = dis;
-								float maxDis = 30000.f;
-								float disScale = 255.f / maxDis;
-								/*if (dis > maxDis - 500.f)
-									dis = maxDis - 500.f;*/
-								float reverseDis = (maxDis - dis);
-								uint8_t comp = (int)(reverseDis * disScale);
-								m_backBuffer[rowColO].a = 255;
-								m_backBuffer[rowColO].r = (int)(comp);
-								m_backBuffer[rowColO].g = (int)(comp);
-								m_backBuffer[rowColO].b = (int)(comp);
+								float dis = (intersectPt - cameraOrigin).Length();
+								if (closestHit < 0.f || dis < closestHit)
+								{
+									closestHit = dis;
+									float maxDis = 30000.f;
+									float disScale = 255.f / maxDis;
+									/*if (dis > maxDis - 500.f)
+										dis = maxDis - 500.f;*/
+									float reverseDis = (maxDis - dis);
+									uint8_t comp = (int)(reverseDis * disScale);
+									m_backBuffer[rowColO].a = 255;
+									m_backBuffer[rowColO].r = (int)(comp);
+									m_backBuffer[rowColO].g = (int)(comp);
+									m_backBuffer[rowColO].b = (int)(comp);
+								}
 							}
 						}
+
+						curRowP += texelRightVec;
+						rowColO++;
 					}
 
-					curRowP += texelRightVec;
-					rowColO++;
+					curRowP = curRowPos;
+					curRowP += texelDownVec * rowCountPerThread;
 				}
 
 				/*auto taskEndTime = std::chrono::high_resolution_clock::now();
@@ -146,8 +153,8 @@ bool BasicCamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, Ta
 		//	rowColOffset++;
 		//}
 		//std::cout << "END ROW: " << y << "\n";
-		rowStart += m_bufferWidth;
-		curLeftSide += texelDownVec;
+		rowStart += (m_bufferWidth*rowCountPerThread);
+		curLeftSide += (texelDownVec*rowCountPerThread);
 	}
 	//std::cout << "-----------\n";
 
