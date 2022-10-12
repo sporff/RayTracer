@@ -51,6 +51,7 @@ bool RayTracerApp::Execute()
 
 	while (pWindow->isOpen())
 	{
+		/*SFML events*/
 		sf::Event event;
 		while (pWindow->pollEvent(event))
 		{
@@ -87,6 +88,7 @@ bool RayTracerApp::Execute()
 			}
 		}
 
+		/*Render Scene*/
 		if (m_camera != nullptr)
 		{
 			sf::Vector2i position = sf::Mouse::getPosition(*pWindow);
@@ -107,12 +109,14 @@ bool RayTracerApp::Execute()
 			m_camera->Render(pRenderTexture, m_pObjectManager, &m_taskExec);
 		}
 
+		/*SFML update display*/
 		pRenderTexture->display();
 		sf::Sprite renderTextureSprite(pRenderTexture->getTexture());
 		pWindow->draw(renderTextureSprite);
 		pWindow->display();
 		pRenderTexture->clear();
 
+		/*Temporary*/
 		auto newFrameEnd = std::chrono::high_resolution_clock::now();
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(newFrameEnd - lastPrint).count() > 1000)
 		{
