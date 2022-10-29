@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include "RayTracerApp.h"
+#include "BasicRenderer.h"
 #include "BasicCamera.h"
 #include "BasicObjectManager.h"
 #include "Sphere.h"
@@ -9,12 +10,17 @@ using namespace RayTracer;
 
 RayTracerApp::RayTracerApp()
 	: m_graphicsWrapper("Ray Tracer", 1600, 1600)
-	, m_camera(nullptr)
+	, m_pRenderer(nullptr)
+	, m_pCamera(nullptr)
 	, m_taskExec(8)
 {
-	m_camera = new BasicCamera();
-	m_camera->SetPosition(Vector3f(0.f, -10000.f, 0.f));
+	// Temporarily create basic versions of things here
 
+	m_pRenderer = new BasicRenderer();
+	
+	m_pCamera = new BasicCamera();
+	m_pCamera->SetPosition(Vector3f(0.f, -10000.f, 0.f));
+	
 	m_pObjectManager = new BasicObjectManager();
 
 	m_pObjectManager->AddObject(std::make_shared<Sphere>(Vector3f(1000.f, 10000.f, -1000.f), 1000.f));
@@ -33,8 +39,11 @@ RayTracerApp::RayTracerApp()
 
 RayTracerApp::~RayTracerApp()
 {
-	if (m_camera != nullptr)
-		delete m_camera;
+	if (m_pRenderer != nullptr)
+		delete m_pRenderer;
+
+	if (m_pCamera != nullptr)
+		delete m_pCamera;
 
 	if (m_pObjectManager != nullptr)
 		delete m_pObjectManager;
@@ -44,8 +53,13 @@ bool RayTracerApp::Execute()
 {
 	auto pWindow = m_graphicsWrapper.GetWindow();
 	auto pRenderTexture = m_graphicsWrapper.GetRenderTexture();
-	auto prevFrameEnd = std::chrono::high_resolution_clock::now();
 
+	if (m_pRenderer != nullptr)
+	{
+		m_pRenderer->Execute();
+	}
+	
+	auto prevFrameEnd = std::chrono::high_resolution_clock::now();
 	auto lastPrint = std::chrono::high_resolution_clock::now();
 
 
@@ -61,35 +75,35 @@ bool RayTracerApp::Execute()
 			{
 				if (event.key.code == sf::Keyboard::Up)
 				{
-					m_camera->AddToPosition(Vector3f(0.f, 100.f, 0.f));
+					m_pCamera->AddToPosition(Vector3f(0.f, 100.f, 0.f));
 				}
 				if (event.key.code == sf::Keyboard::Down)
 				{
-					m_camera->AddToPosition(Vector3f(0.f, -100.f, 0.f));
+					m_pCamera->AddToPosition(Vector3f(0.f, -100.f, 0.f));
 				}
 
 				if (event.key.code == sf::Keyboard::Right)
 				{
-					m_camera->AddToPosition(Vector3f(100.f, 0.f, 0.f));
+					m_pCamera->AddToPosition(Vector3f(100.f, 0.f, 0.f));
 				}
 				if (event.key.code == sf::Keyboard::Left)
 				{
-					m_camera->AddToPosition(Vector3f(-100.f, 0.f, 0.f));
+					m_pCamera->AddToPosition(Vector3f(-100.f, 0.f, 0.f));
 				}
 
 				if (event.key.code == sf::Keyboard::R)
 				{
-					m_camera->AddToPosition(Vector3f(0.f, 0.f, 100.f));
+					m_pCamera->AddToPosition(Vector3f(0.f, 0.f, 100.f));
 				}
 				if (event.key.code == sf::Keyboard::F)
 				{
-					m_camera->AddToPosition(Vector3f(0.f, 0.f, -100.f));
+					m_pCamera->AddToPosition(Vector3f(0.f, 0.f, -100.f));
 				}
 			}
 		}
 
 		/*Render Scene*/
-		if (m_camera != nullptr)
+		if (m_pCamera != nullptr)
 		{
 			sf::Vector2i position = sf::Mouse::getPosition(*pWindow);
 			sf::Vector2u winSize = pWindow->getSize();
@@ -106,7 +120,7 @@ bool RayTracerApp::Execute()
 			//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, 0.f, mouseCenterOffset.y));
 			//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, mouseCenterOffset.y, 0.f));
 
-			m_camera->Render(pRenderTexture, m_pObjectManager, &m_taskExec);
+			m_pCamera->Render(pRenderTexture, m_pObjectManager, &m_taskExec);
 		}
 
 		/*SFML update display*/
@@ -122,7 +136,7 @@ bool RayTracerApp::Execute()
 		{
 			std::cout << "Frame time uS: " << std::chrono::duration_cast<std::chrono::nanoseconds>(newFrameEnd - prevFrameEnd).count() << "\n";
 
-			auto camPos = m_camera->GetPosition();
+			auto camPos = m_pCamera->GetPosition();
 			std::cout << "Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << "\n";
 			lastPrint = newFrameEnd;
 		}

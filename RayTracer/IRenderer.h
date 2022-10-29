@@ -11,6 +11,7 @@ public:
 	IRenderer();
 	virtual ~IRenderer() = 0;
 
+	virtual bool Execute() = 0;
 private:
 
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "GraphicsWrapper.h"
+#include "IRenderer.h"
 #include "IObjectManager.h"
 #include "ICamera.h"
 #include "Sphere.h"
@@ -21,8 +22,9 @@ public:
 
 private:
 	GraphicsWrapper m_graphicsWrapper;
+	IRenderer* m_pRenderer;
 	IObjectManager* m_pObjectManager;
-	ICamera* m_camera;
+	ICamera* m_pCamera;
 
 	TaskExecutor m_taskExec;
 };
