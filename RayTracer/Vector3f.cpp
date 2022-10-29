@@ -11,10 +11,9 @@ Vector3f::Vector3f()
 { }
 
 Vector3f::Vector3f(float x, float y, float z)
-	: x(x)
-	, y(y)
-	, z(z)
-{ }
+{
+	Set(x, y, z);
+}
 
 Vector3f::Vector3f(const Vector3f& copyFrom)
 	: x(copyFrom.x)
@@ -25,6 +24,18 @@ Vector3f::Vector3f(const Vector3f& copyFrom)
 Vector3f::~Vector3f()
 { }
 
+void Vector3f::Set(float x, float y, float z)
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+}
+
+void Vector3f::Set(const Vector3f& v)
+{
+	Set(v.x, v.y, v.z);
+}
+
 float Vector3f::Length() const
 {
 	return std::sqrt(x*x + y*y + z*z);
@@ -34,7 +45,6 @@ float Vector3f::LengthSquared() const
 {
 	return x*x + y*y + z*z;
 }
-
 
 float Vector3f::FastInverseLength() const
 {
@@ -83,6 +93,13 @@ Vector3f Vector3f::Scale(float scalar) const
 Vector3f Vector3f::operator*(float scalar) const
 {
 	return Scale(scalar);
+}
+
+Vector3f Vector3f::operator*=(float scalar)
+{
+	Set(Scale(scalar));
+
+	return *this;
 }
 
 Vector3f Vector3f::operator-(const Vector3f& rhs) const

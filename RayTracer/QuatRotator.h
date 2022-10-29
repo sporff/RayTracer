@@ -1,16 +1,24 @@
 #pragma once
 #include "IRotator.h"
+#include "Quat.h"
 
 namespace RayTracer
 {
 
-	class QuatRotator : public IRotator
-	{
-	public:
-		QuatRotator();
-		virtual ~QuatRotator();
+class QuatRotator : public IRotator
+{
+public:
+	QuatRotator();
+	QuatRotator(const Quat& q);
+	virtual ~QuatRotator();
 
-		virtual Vector3f RotateVector(const Vector3f& v);
-	};
+	void Set(const Quat& q);
+
+	virtual Vector3f RotateVector(const Vector3f& v);
+
+
+private:
+	Quat q;
+};
 
 }

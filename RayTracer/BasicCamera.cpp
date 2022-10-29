@@ -119,7 +119,7 @@ bool BasicCamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, Ta
 					}
 
 					curRowP = curRowPos;
-					curRowP += texelDownVec * rowCountPerThread;
+					curRowP += texelDownVec * (float)rowCountPerThread;
 				}
 
 				/*auto taskEndTime = std::chrono::high_resolution_clock::now();
@@ -153,8 +153,8 @@ bool BasicCamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, Ta
 		//	rowColOffset++;
 		//}
 		//std::cout << "END ROW: " << y << "\n";
-		rowStart += (m_bufferWidth*rowCountPerThread);
-		curLeftSide += (texelDownVec*rowCountPerThread);
+		rowStart += (int64_t)(m_bufferWidth*rowCountPerThread);
+		curLeftSide += (texelDownVec*(float)rowCountPerThread);
 	}
 	//std::cout << "-----------\n";
 

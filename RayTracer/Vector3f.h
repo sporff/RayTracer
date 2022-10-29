@@ -12,6 +12,9 @@ public:
 	Vector3f(const Vector3f& copyFrom);
 	~Vector3f();
 
+	void Set(float x, float y, float z);
+	void Set(const Vector3f& v);
+
 	static Vector3f Zero();
 
 	float Length() const;
@@ -23,7 +26,9 @@ public:
 	Vector3f Cross(const Vector3f& v2) const;
 
 	Vector3f Scale(float scalar) const;
+
 	Vector3f operator*(float scalar) const;
+	Vector3f operator*=(float scalar);
 	Vector3f operator-(const Vector3f& rhs) const;
 	Vector3f operator+(const Vector3f& rhs) const;
 	Vector3f operator+=(const Vector3f& rhs);

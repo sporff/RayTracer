@@ -13,12 +13,17 @@ Quat::Quat(float X, float Y, float Z, float W)
 	Set(X, Y, Z, W);
 }
 
+void Quat::Set(const Quat& q)
+{
+	this->X = q.X;
+	this->Y = q.Y;
+	this->Z = q.Z;
+	this->W = q.W;
+}
+
 void Quat::Set(float X, float Y, float Z, float W)
 {
-	this->X = X;
-	this->Y = Y;
-	this->Z = Z;
-	this->W = W;
+	Set(Quat(X, Y, Z, W));
 }
 
 void Quat::Set(const Vector3f& vec)
@@ -68,9 +73,32 @@ Quat Quat::Multiply(const Quat& B) const
 	);
 }
 
+Vector3f Quat::Multiply(const Vector3f& v) const
+{
+	Vector3f uv, uuv;
+	Vector3f qvec(X, Y, Z);
+	uv = qvec.Cross(v);
+	uuv = qvec.Cross(uv);
+	uv *= (2.0f * W);
+
+	return v + uv + uuv;
+};
+
 Quat Quat::operator*(const Quat& B) const
 {
 	return Multiply(B);
+}
+
+Quat Quat::operator*=(const Quat& B)
+{
+	Set(Multiply(B));
+
+	return *this;
+}
+
+Vector3f Quat::operator*(const Vector3f& v) const
+{
+	return Multiply(v);
 }
 
 Quat& Quat::operator=(const Quat& from)
