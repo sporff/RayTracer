@@ -151,6 +151,7 @@
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IObjectManager.cpp" />
     <ClCompile Include="IRotator.cpp" />
+    <ClCompile Include="Quat.cpp" />
     <ClCompile Include="QuatRotator.cpp" />
     <ClCompile Include="RayTracer.cpp" />
     <ClCompile Include="RayTracerApp.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IObjectManager.h" />
     <ClInclude Include="IRotator.h" />
+    <ClInclude Include="Quat.h" />
     <ClInclude Include="QuatRotator.h" />
     <ClInclude Include="RayTracerApp.h" />
     <ClInclude Include="Sphere.h" />

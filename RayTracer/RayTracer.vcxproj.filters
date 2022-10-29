@@ -60,6 +60,9 @@
     <ClCompile Include="QuatRotator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Quat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsWrapper.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QuatRotator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
