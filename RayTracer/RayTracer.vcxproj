@@ -150,6 +150,7 @@
     <ClCompile Include="GraphicsWrapper.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IObjectManager.cpp" />
+    <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="IRotator.cpp" />
     <ClCompile Include="Quat.cpp" />
     <ClCompile Include="QuatRotator.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="GraphicsWrapper.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IObjectManager.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="IRotator.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="QuatRotator.h" />
