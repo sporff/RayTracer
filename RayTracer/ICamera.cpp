@@ -9,9 +9,6 @@ ICamera::ICamera()
 ICamera::~ICamera()
 { }
 
-bool ICamera::Render(sf::RenderTexture* pTarget, IObjectManager* pObjMgr, TaskExecutor* pTaskExec)
-{ return true; }
-
 void ICamera::SetPosition(const Vector3f& pos)
 {
 	m_position = pos;

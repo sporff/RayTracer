@@ -122,5 +122,8 @@
     <ClInclude Include="BasicRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RayTracerConsts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,9 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+
+#include "Vector3f.h"
+#include "Ray.h"
 #include "Sphere.h"
 
 using namespace RayTracer;

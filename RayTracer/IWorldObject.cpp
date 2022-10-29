@@ -1,3 +1,4 @@
+#include "Ray.h"
 #include "IWorldObject.h"
 
 using namespace RayTracer;

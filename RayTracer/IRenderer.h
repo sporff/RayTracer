@@ -11,7 +11,7 @@ public:
 	IRenderer();
 	virtual ~IRenderer() = 0;
 
-	virtual bool Execute() = 0;
+	virtual bool Execute(sf::RenderTexture* pTarget, ICamera* pCamera, IObjectManager* pObjectManager, TaskExecutor* pTaskExecutor) = 0;
 private:
 
 };

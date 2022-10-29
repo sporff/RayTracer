@@ -1,3 +1,4 @@
+#include "Vector3f.h"
 #include "IObjectManager.h"
 
 using namespace RayTracer;

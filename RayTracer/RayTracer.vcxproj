@@ -176,6 +176,7 @@
     <ClInclude Include="Quat.h" />
     <ClInclude Include="QuatRotator.h" />
     <ClInclude Include="RayTracerApp.h" />
+    <ClInclude Include="RayTracerConsts.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="IWorldObject.h" />
     <ClInclude Include="Ray.h" />

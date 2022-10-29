@@ -1,5 +1,6 @@
 #pragma once
-#include "Ray.h"
+
+class Ray;
 
 namespace RayTracer
 {

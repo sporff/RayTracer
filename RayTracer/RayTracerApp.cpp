@@ -15,6 +15,7 @@ RayTracerApp::RayTracerApp()
 	, m_taskExec(8)
 {
 	// Temporarily create basic versions of things here
+	// In the future, pass it in to constructor?
 
 	m_pRenderer = new BasicRenderer();
 	
@@ -53,11 +54,6 @@ bool RayTracerApp::Execute()
 {
 	auto pWindow = m_graphicsWrapper.GetWindow();
 	auto pRenderTexture = m_graphicsWrapper.GetRenderTexture();
-
-	if (m_pRenderer != nullptr)
-	{
-		m_pRenderer->Execute();
-	}
 	
 	auto prevFrameEnd = std::chrono::high_resolution_clock::now();
 	auto lastPrint = std::chrono::high_resolution_clock::now();
@@ -103,24 +99,29 @@ bool RayTracerApp::Execute()
 		}
 
 		/*Render Scene*/
-		if (m_pCamera != nullptr)
+		//if (m_pCamera != nullptr)
+		//{
+		//	sf::Vector2i position = sf::Mouse::getPosition(*pWindow);
+		//	sf::Vector2u winSize = pWindow->getSize();
+
+		//	sf::Vector2f mouseCenterOffset(
+		//		((float)position.x - (float)winSize.x / 2.f) * 0.5f,
+		//		((float)position.y - (float)winSize.y / 2.f) * 2.0f
+		//	);
+		//	/*std::cout << position.x << ", " << position.y << "\n";
+		//	std::cout << winSize.x << ", " << winSize.y << "\n";
+		//	std::cout << mouseCenterOffset.x << ", " << mouseCenterOffset.y << "\n";
+		//	std::cout << "--------\n";*/
+
+		//	//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, 0.f, mouseCenterOffset.y));
+		//	//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, mouseCenterOffset.y, 0.f));
+
+		//	m_pCamera->Render(pRenderTexture, m_pObjectManager, &m_taskExec);
+		//}
+
+		if (m_pRenderer != nullptr)
 		{
-			sf::Vector2i position = sf::Mouse::getPosition(*pWindow);
-			sf::Vector2u winSize = pWindow->getSize();
-
-			sf::Vector2f mouseCenterOffset(
-				((float)position.x - (float)winSize.x / 2.f) * 0.5f,
-				((float)position.y - (float)winSize.y / 2.f) * 2.0f
-			);
-			/*std::cout << position.x << ", " << position.y << "\n";
-			std::cout << winSize.x << ", " << winSize.y << "\n";
-			std::cout << mouseCenterOffset.x << ", " << mouseCenterOffset.y << "\n";
-			std::cout << "--------\n";*/
-
-			//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, 0.f, mouseCenterOffset.y));
-			//m_camera->SetPosition(Vector3f(mouseCenterOffset.x, mouseCenterOffset.y, 0.f));
-
-			m_pCamera->Render(pRenderTexture, m_pObjectManager, &m_taskExec);
+			m_pRenderer->Execute(pRenderTexture, m_pCamera, m_pObjectManager, &m_taskExec);
 		}
 
 		/*SFML update display*/
