@@ -62,8 +62,8 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 	std::fill(m_backBuffer.begin(), m_backBuffer.end(), PixelType());
 
 	int rowCountPerThread = 20;
-	for (int y = 0; y < m_bufferHeight; y += rowCountPerThread)
-		//for (int y = 0; y < bufferHeight; y++)
+	//for (int y = 0; y < m_bufferHeight; y += rowCountPerThread)
+	for (int y = 0; y < m_bufferHeight; y++)
 	{
 		Vector3f curRowPos = curLeftSide;
 
@@ -80,8 +80,8 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 				Vector3f curRowP = curRowPos;
 				int64_t rowColO = rowColOffset;
 
-				for (int rowCount = 0; rowCount < rowCountPerThread; rowCount++)
-				{
+				//for (int rowCount = 0; rowCount < rowCountPerThread; rowCount++)
+				//{
 					for (int x = 0; x < m_bufferWidth; x++)
 					{
 						rayToCast.SetDirection(curRowP);
@@ -113,10 +113,10 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 
 						curRowP += texelRightVec;
 						rowColO++;
-					}
+					//}
 
-					curRowP = curRowPos;
-					curRowP += texelDownVec * (float)rowCountPerThread;
+					//curRowP = curRowPos;
+					//curRowP += texelDownVec * (float)rowCountPerThread;
 				}
 
 				/*auto taskEndTime = std::chrono::high_resolution_clock::now();
@@ -150,8 +150,11 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 		//	rowColOffset++;
 		//}
 		//std::cout << "END ROW: " << y << "\n";
-		rowStart += (int64_t)(m_bufferWidth * rowCountPerThread);
-		curLeftSide += (texelDownVec * (float)rowCountPerThread);
+		
+		//rowStart += (int64_t)(m_bufferWidth * rowCountPerThread);
+		//curLeftSide += (texelDownVec * (float)rowCountPerThread);
+		rowStart += (int64_t)(m_bufferWidth);
+		curLeftSide += (texelDownVec);
 	}
 	//std::cout << "-----------\n";
 
