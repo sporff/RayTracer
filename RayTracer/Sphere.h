@@ -1,4 +1,6 @@
 #pragma once
+
+#include "Vector3f.h"
 #include "IWorldObject.h"
 
 namespace RayTracer
@@ -11,10 +13,10 @@ public:
     Sphere(Vector3f position, float radius);
     virtual ~Sphere();
 
-    bool GetRayIntersection(const Ray& ray, float* pT_OUT, Vector3f* pIntersect_OUT=nullptr) override;
+    virtual bool GetRayIntersection(const Ray& ray, float* pT_OUT, Vector3f* pIntersect_OUT=nullptr) override;
 
-    bool DoesRayIntersectAABB(const Ray& ray);
-    bool DoesRayIntersectAABB2(const Ray& ray);
+    //bool DoesRayIntersectAABB(const Ray& ray);
+    //bool DoesRayIntersectAABB2(const Ray& ray);
 
 private:
 
