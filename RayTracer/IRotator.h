@@ -11,6 +11,7 @@ public:
 	virtual ~IRotator() = 0;
 
 	virtual Vector3f RotateVector(const Vector3f& v) = 0;
+	virtual Vector3f RotateVectorInverse(const Vector3f& v) = 0;
 };
 
 }

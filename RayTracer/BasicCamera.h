@@ -13,7 +13,6 @@ public:
 	virtual ~BasicCamera();
 
 private:
-	std::shared_ptr<IRotator> m_orientation;
 };
 
 }

@@ -19,6 +19,16 @@ Vector3f ICamera::GetPosition()
 	return m_position;
 }
 
+void ICamera::AddToOrientation(QuatRotator qr)
+{
+	m_orientation.AddRotation(qr);
+}
+
+QuatRotator ICamera::GetOrientation()
+{
+	return m_orientation;
+}
+
 void ICamera::AddToPosition(const Vector3f& v)
 {
 	m_position += v;

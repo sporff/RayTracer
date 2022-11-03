@@ -21,7 +21,7 @@ RayTracerApp::RayTracerApp()
 	m_pRenderer = new BasicRenderer();
 	
 	m_pCamera = new BasicCamera();
-	m_pCamera->SetPosition(Vector3f(0.f, -10000.f, 0.f));
+	m_pCamera->SetPosition(Vector3f(-10000.f, -10000.f, 0.f));
 	
 	m_pObjectManager = new BasicObjectManager();
 
@@ -72,20 +72,20 @@ bool RayTracerApp::Execute()
 				pWindow->close();
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Up)
+				if (event.key.code == sf::Keyboard::W)
 				{
 					m_pCamera->AddToPosition(Vector3f(0.f, 100.f, 0.f));
 				}
-				if (event.key.code == sf::Keyboard::Down)
+				if (event.key.code == sf::Keyboard::S)
 				{
 					m_pCamera->AddToPosition(Vector3f(0.f, -100.f, 0.f));
 				}
 
-				if (event.key.code == sf::Keyboard::Right)
+				if (event.key.code == sf::Keyboard::D)
 				{
 					m_pCamera->AddToPosition(Vector3f(100.f, 0.f, 0.f));
 				}
-				if (event.key.code == sf::Keyboard::Left)
+				if (event.key.code == sf::Keyboard::A)
 				{
 					m_pCamera->AddToPosition(Vector3f(-100.f, 0.f, 0.f));
 				}
@@ -97,6 +97,19 @@ bool RayTracerApp::Execute()
 				if (event.key.code == sf::Keyboard::F)
 				{
 					m_pCamera->AddToPosition(Vector3f(0.f, 0.f, -100.f));
+				}
+
+				if (event.key.code == sf::Keyboard::Q)
+				{
+					QuatRotator qr;
+					qr.Set(0.f, 0.f, 3.14159f / 90.f);
+					m_pCamera->AddToOrientation(qr);
+				}
+				if (event.key.code == sf::Keyboard::E)
+				{
+					QuatRotator qr;
+					qr.Set(0.f, 0.f, -3.14159f / 90.f);
+					m_pCamera->AddToOrientation(qr);
 				}
 			}
 		}

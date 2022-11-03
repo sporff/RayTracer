@@ -1,3 +1,4 @@
+#include <iostream>
 #include "RayTracerConsts.h"
 #include "BasicRenderer.h"
 #include "Ray.h"
@@ -25,6 +26,7 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 
 	//Vector3f cameraOrigin(-500.f, 0.f, 0.f);
 	Vector3f cameraOrigin = pCamera->GetPosition();
+	QuatRotator cameraRotator = pCamera->GetOrientation();
 
 	Vector3f forwardUnit(0.f, 1.f, 0.f);
 	Vector3f upUnit(0.f, 0.f, 1.f);
@@ -46,9 +48,17 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 		, screenDistance
 		, screenCenter.z + screenHalfHeight
 	);
+	topLeft = cameraRotator.RotateVector(topLeft);
+
+	//std::cout << topLeft.x << ", " << topLeft.y << ", " << topLeft.z << "\n";
+	Vector3f eulerRotate = cameraRotator.GetQuat().ToEuler();
+	std::cout << eulerRotate.x << ", " << eulerRotate.y << ", " << eulerRotate.z << "\n";
+
 	// calc texel spacial vectors
 	Vector3f texelRightVec(texelWidth, 0.f, 0.f);	//
 	Vector3f texelDownVec(0.f, 0.f, -texelWidth);	//
+	texelRightVec = cameraRotator.RotateVector(texelRightVec);
+	texelDownVec = cameraRotator.RotateVector(texelDownVec);
 
 	//std::cout << "-----------\n";
 	Vector3f curLeftSide = topLeft;
