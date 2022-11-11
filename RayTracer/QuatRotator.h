@@ -15,7 +15,7 @@ public:
 
 	void Set(const Quat& q);
 	void Set(float xAngle, float yAngle, float zAngle);
-	Quat GetQuat();
+	Quat GetQuat() const;
 
 	void AddRotation(const QuatRotator& qr);
 

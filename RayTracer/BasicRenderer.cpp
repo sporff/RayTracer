@@ -29,7 +29,6 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 	QuatRotator cameraRotator = pCamera->GetOrientation();
 
 	Vector3f forwardUnit(0.f, 1.f, 0.f);
-	Vector3f upUnit(0.f, 0.f, 1.f);
 
 	// calc screen center
 	Vector3f screenCenter = forwardUnit * screenDistance;
@@ -48,17 +47,35 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 		, screenDistance
 		, screenCenter.z + screenHalfHeight
 	);
-	topLeft = cameraRotator.RotateVector(topLeft);
+
+	/*system("CLS");
+	std::cout << "---------------------\n";
+	std::cout << " cam  :" << cameraOrigin.x << ", " << cameraOrigin.y << ", " << cameraOrigin.z << "\n";*/
 
 	//std::cout << topLeft.x << ", " << topLeft.y << ", " << topLeft.z << "\n";
-	Vector3f eulerRotate = cameraRotator.GetQuat().ToEuler();
-	std::cout << eulerRotate.x << ", " << eulerRotate.y << ", " << eulerRotate.z << "\n";
+	topLeft = cameraRotator.RotateVectorInverse(topLeft);
+	//std::cout << topLeft.x << ", " << topLeft.y << ", " << topLeft.z << "\n";
+	topLeft += cameraOrigin;
+	//std::cout << topLeft.x << ", " << topLeft.y << ", " << topLeft.z << "\n";
+	//std::cout << "---------------------\n";
 
 	// calc texel spacial vectors
 	Vector3f texelRightVec(texelWidth, 0.f, 0.f);	//
 	Vector3f texelDownVec(0.f, 0.f, -texelWidth);	//
-	texelRightVec = cameraRotator.RotateVector(texelRightVec);
-	texelDownVec = cameraRotator.RotateVector(texelDownVec);
+	texelRightVec = cameraRotator.RotateVectorInverse(texelRightVec);
+	texelDownVec = cameraRotator.RotateVectorInverse(texelDownVec);
+
+	//std::cout << " texel: " << texelWidth << "\n";
+	//std::cout << " right:" << texelRightVec.x << ", " << texelRightVec.y << ", " << texelRightVec.z << "\n";
+	//std::cout << " down :" << texelDownVec.x << ", " << texelDownVec.y << ", " << texelDownVec.z << "\n";
+
+	////std::cout << topLeft.x << ", " << topLeft.y << ", " << topLeft.z << "\n";
+	//Vector3f eulerRotate = cameraRotator.GetQuat().ToEuler();
+	//std::cout << " quat :" << cameraRotator.GetQuat().X << ", " << cameraRotator.GetQuat().Y
+	//	<< ", " << cameraRotator.GetQuat().Z << ", " << cameraRotator.GetQuat().W << "\n";
+	//std::cout << " euler:" << RADTODEG(eulerRotate.x) << ", " << RADTODEG(eulerRotate.y) << ", " << RADTODEG(eulerRotate.z) << "\n";
+
+	//std::cout << "---------------------\n";
 
 	//std::cout << "-----------\n";
 	Vector3f curLeftSide = topLeft;
@@ -94,7 +111,12 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 				//{
 					for (int x = 0; x < m_bufferWidth; x++)
 					{
-						rayToCast.SetDirection(curRowP);
+						rayToCast.SetDirection(curRowP-cameraOrigin);
+
+						/*if (y == 150)
+						{
+							std::cout << "  rowPos: " << curRowP.x << ", " << curRowP.y << ", " << curRowP.z << ", " << rowColO << "\n";
+						}*/
 
 						float closestHit = -1.f;
 						for (auto& curObj : objs)
@@ -134,7 +156,8 @@ bool RayTracer::BasicRenderer::Execute(sf::RenderTexture* pTarget, ICamera* pCam
 
 				taskRefCount--;
 				//std::cout << "Task-- : " << taskRefCount << "\n";
-			});
+			}
+		);
 
 		//for (int x = 0; x < bufferWidth; x++)
 		//{

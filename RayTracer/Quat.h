@@ -10,6 +10,7 @@ class Quat
 public:
 	Quat();
 	Quat(float X, float Y, float Z, float W);
+	Quat(const Vector3f& v);
 
 	void Set(const Quat& q);
 	void Set(float xAngle, float yAngle, float zAngle);
@@ -18,7 +19,7 @@ public:
 
 	Vector3f ToEuler();
 
-	Quat Inverse();
+	Quat Inverse() const;
 	bool Equals(const Quat& from) const;
 	Quat Multiply(const Quat& B) const;
 	Vector3f Multiply(const Vector3f& B) const;
@@ -31,8 +32,10 @@ public:
 
 	bool operator==(const Quat& B) const;
 
-private:
 	float X, Y, Z, W;
+
+private:
+	
 };
 
 }

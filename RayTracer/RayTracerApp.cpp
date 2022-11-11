@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include "RayTracerConsts.h"
 #include "RayTracerApp.h"
 #include "BasicRenderer.h"
 #include "BasicCamera.h"
@@ -21,7 +22,8 @@ RayTracerApp::RayTracerApp()
 	m_pRenderer = new BasicRenderer();
 	
 	m_pCamera = new BasicCamera();
-	m_pCamera->SetPosition(Vector3f(-10000.f, -10000.f, 0.f));
+	//m_pCamera->SetPosition(Vector3f(-10000.f, -10000.f, 0.f));
+	m_pCamera->SetPosition(Vector3f(0.f, 0.f, 0.f));
 	
 	m_pObjectManager = new BasicObjectManager();
 
@@ -29,7 +31,7 @@ RayTracerApp::RayTracerApp()
 	m_pObjectManager->AddObject(std::make_shared<Sphere>(Vector3f(0.f, 1000.f, 0.f), 200.f));
 	//m_pObjectManager->AddObject(std::make_shared<Sphere>(Vector3f(-1000.f, 20000.f, -5000.f), 5000.f));
 
-	m_pObjectManager->AddObject(std::make_shared<Cuboid>(Vector3f(1000.f, 10000.f, -1000.f), Vector3f(1000.f, 1000.f, 1000.f)));
+	m_pObjectManager->AddObject(std::make_shared<Cuboid>(Vector3f(1000.f, 2000.f, -300.f), Vector3f(200.f, 200.f, 200.f)));
 
 	/*for (int i = 0; i < 2; i++)
 	{
@@ -72,46 +74,54 @@ bool RayTracerApp::Execute()
 				pWindow->close();
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::W)
-				{
-					m_pCamera->AddToPosition(Vector3f(0.f, 100.f, 0.f));
-				}
-				if (event.key.code == sf::Keyboard::S)
-				{
-					m_pCamera->AddToPosition(Vector3f(0.f, -100.f, 0.f));
-				}
-
-				if (event.key.code == sf::Keyboard::D)
-				{
-					m_pCamera->AddToPosition(Vector3f(100.f, 0.f, 0.f));
-				}
-				if (event.key.code == sf::Keyboard::A)
-				{
-					m_pCamera->AddToPosition(Vector3f(-100.f, 0.f, 0.f));
-				}
-
-				if (event.key.code == sf::Keyboard::R)
-				{
-					m_pCamera->AddToPosition(Vector3f(0.f, 0.f, 100.f));
-				}
-				if (event.key.code == sf::Keyboard::F)
-				{
-					m_pCamera->AddToPosition(Vector3f(0.f, 0.f, -100.f));
-				}
-
-				if (event.key.code == sf::Keyboard::Q)
-				{
-					QuatRotator qr;
-					qr.Set(0.f, 0.f, 3.14159f / 90.f);
-					m_pCamera->AddToOrientation(qr);
-				}
-				if (event.key.code == sf::Keyboard::E)
-				{
-					QuatRotator qr;
-					qr.Set(0.f, 0.f, -3.14159f / 90.f);
-					m_pCamera->AddToOrientation(qr);
-				}
+				KeyDownEvent(event.key.code);
 			}
+			else if (event.type == sf::Event::KeyReleased)
+			{
+				KeyUpEvent(event.key.code);
+			}
+		}
+
+		float moveAmt = 10.f;
+		if (IsKeyPressed(sf::Keyboard::W))
+		{
+			m_pCamera->AddToPosition(Vector3f(0.f, moveAmt, 0.f));
+		}
+		if (IsKeyPressed(sf::Keyboard::S))
+		{
+			m_pCamera->AddToPosition(Vector3f(0.f, -moveAmt, 0.f));
+		}
+
+		if (IsKeyPressed(sf::Keyboard::D))
+		{
+			m_pCamera->AddToPosition(Vector3f(moveAmt, 0.f, 0.f));
+		}
+		if (IsKeyPressed(sf::Keyboard::A))
+		{
+			m_pCamera->AddToPosition(Vector3f(-moveAmt, 0.f, 0.f));
+		}
+
+		if (IsKeyPressed(sf::Keyboard::R))
+		{
+			m_pCamera->AddToPosition(Vector3f(0.f, 0.f, moveAmt));
+		}
+		if (IsKeyPressed(sf::Keyboard::F))
+		{
+			m_pCamera->AddToPosition(Vector3f(0.f, 0.f, -moveAmt));
+		}
+
+		float rotDegrees = 5.f;
+		if (IsKeyPressed(sf::Keyboard::Q))
+		{
+			QuatRotator qr;
+			qr.Set(0.f, 0.f, DEGTORAD(rotDegrees));
+			m_pCamera->AddToOrientation(qr);
+		}
+		if (IsKeyPressed(sf::Keyboard::E))
+		{
+			QuatRotator qr;
+			qr.Set(0.f, 0.f, DEGTORAD(-rotDegrees));
+			m_pCamera->AddToOrientation(qr);
 		}
 
 		/*Render Scene*/
@@ -151,14 +161,29 @@ bool RayTracerApp::Execute()
 		auto newFrameEnd = std::chrono::high_resolution_clock::now();
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(newFrameEnd - lastPrint).count() > 1000)
 		{
-			std::cout << "Frame time uS: " << std::chrono::duration_cast<std::chrono::nanoseconds>(newFrameEnd - prevFrameEnd).count() << "\n";
+			//std::cout << "Frame time uS: " << std::chrono::duration_cast<std::chrono::nanoseconds>(newFrameEnd - prevFrameEnd).count() << "\n";
 
 			auto camPos = m_pCamera->GetPosition();
-			std::cout << "Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << "\n";
+			//std::cout << "Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << "\n";
 			lastPrint = newFrameEnd;
 		}
 		prevFrameEnd = newFrameEnd;
 	}
 
 	return true;
+}
+
+void RayTracerApp::KeyDownEvent(sf::Keyboard::Key key)
+{
+	m_keys.insert(key);
+}
+
+void RayTracerApp::KeyUpEvent(sf::Keyboard::Key key)
+{
+	m_keys.erase(key);
+}
+
+bool RayTracerApp::IsKeyPressed(sf::Keyboard::Key key)
+{
+	return m_keys.find(key) != m_keys.end();
 }

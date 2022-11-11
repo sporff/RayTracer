@@ -31,7 +31,7 @@ void RayTracer::QuatRotator::Set(float xAngle, float yAngle, float zAngle)
 	q.Set(xAngle, yAngle, zAngle);
 }
 
-Quat RayTracer::QuatRotator::GetQuat()
+Quat RayTracer::QuatRotator::GetQuat() const
 {
 	return q;
 }
@@ -39,12 +39,15 @@ Quat RayTracer::QuatRotator::GetQuat()
 void RayTracer::QuatRotator::AddRotation(const QuatRotator& qr)
 {
 	q *= qr.q;
+	//Quat qrInverse = qr.GetQuat().Inverse();
+	//q = qr.GetQuat() * q * qrInverse;
 }
 
 Vector3f RayTracer::QuatRotator::RotateVector(const Vector3f& v)
 {
 	//return Vector3f::Zero();
 	return q * v;
+	//return q *= v;
 }
 
 Vector3f RayTracer::QuatRotator::RotateVectorInverse(const Vector3f& v)

@@ -13,6 +13,11 @@ Quat::Quat(float X, float Y, float Z, float W)
 	Set(X, Y, Z, W);
 }
 
+RayTracer::Quat::Quat(const Vector3f& v)
+{
+	Set(v);
+}
+
 void Quat::Set(const Quat& q)
 {
 	this->X = q.X;
@@ -153,7 +158,7 @@ Vector3f Quat::ToEuler()
 	return Vector3f(yaw_z, pitch_y, roll_x);
 }
 
-Quat Quat::Inverse()
+Quat Quat::Inverse() const
 {
 	return Quat(-X, -Y, -Z, W);
 }
@@ -203,7 +208,14 @@ Quat Quat::operator*=(const Quat& B)
 
 Vector3f Quat::operator*(const Vector3f& v) const
 {
-	return Multiply(v);
+	//return Multiply(v);
+	//auto iq = this->Inverse();
+	//Quat qv(v);
+	Quat qv(v.x, v.y, v.z, 0.f);
+	Quat result(*this * qv * this->Inverse());
+	return Vector3f(result.X, result.Y, result.Z);
+
+	//return Vector3f(this->X, this->Y, this->Z);
 }
 
 Quat& Quat::operator=(const Quat& from)
